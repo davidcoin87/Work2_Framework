@@ -46,7 +46,6 @@ class CategoryController extends Controller
                 'result' => 'Objeto creado con éxito'
             ]);
         }
-        
     }
 
     //enviar como Json para prueba
