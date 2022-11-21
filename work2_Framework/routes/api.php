@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('category/all', [CategoryController::class, 'getAll']);
+Route::get('category/{id}/getById', [CategoryController::class, 'getById']);
+Route::post('category/store', [CategoryController::class, 'store']);
+Route::put('category/{id}/update', [CategoryController::class, 'update']);
+Route::delete('category/{id}/destroy', [CategoryController::class, 'destroy']);
+
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
