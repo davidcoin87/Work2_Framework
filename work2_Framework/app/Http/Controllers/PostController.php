@@ -3,17 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     public function getAll()
     {
-        $post = Post::all()->toArray();
+        $posts = Post::all()->toArray();
+        //dd($posts);
+        //dd($posts[0]['name']);
+
+        $postsData = [];
+
+        foreach($posts as $post){
+            $categoryName = Category::find($post['category_id'])->name;
+            $estado = false;
+            if($post["state"] !== 0){
+                $estado="Activo";
+            }
+            //dd($categoryName);
+            $newData = [
+                "id"=>$post["id"],
+                "name"=>$post["name"],
+                "description"=>$post['desription'],
+                "categoryName"=>$categoryName,
+                "estado"=>$estado
+            ];
+            //dd($newData);
+            array_push($postsData, $newData);
+            // array_push($postsData, [
+            //     "name" => $post["name"],
+            //     "categoryName" => $categoryName,
+            //     "desription" => $post['description']
+            // ]);
+            //dd($postsData);
+        }
+        //dd($postsData);
         return response()->json([
             'error' => '',
             'response' => 'true',
-            'result' => $post
+            'result' => $postsData
         ]);
     }
 
@@ -38,9 +68,10 @@ class PostController extends Controller
         $post->state = $request->state;
         $rta = $post->save();
 
+        //dd($rta);
         //print_r($rta);
 
-        if($rta->id > 0)
+        if($rta)
         {
             return response()->json([
                 'error' => '',
